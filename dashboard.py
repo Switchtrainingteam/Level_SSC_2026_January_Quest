@@ -1,149 +1,92 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
+import matplotlib.pyplot as plt
+import numpy as np
 
-# -----------------------------------------------------------------------------
-# 1. PAGE CONFIGURATION & DATA LOADING
-# -----------------------------------------------------------------------------
-st.set_page_config(page_title="SSC 2026 Dashboard", layout="wide")
+# Set page layout to wide
+st.set_page_config(layout="wide")
 
-# CSS to style the metrics cards to look like a "Row"
-st.markdown("""
-<style>
-    div[data-testid="metric-container"] {
-        background-color: #f0f2f6;
-        border: 1px solid #d6d6d6;
-        padding: 10px;
-        border-radius: 5px;
-        overflow-wrap: break-word;
-    }
-</style>
-""", unsafe_allow_html=True)
+# --- Load Data ---
+@st.cache_data
+def load_data():
+    lob_df = pd.read_csv("Level 1.xlsx - LOB Comparison.csv")
+    region_df = pd.read_csv("Level 1.xlsx - Regional Performance Comparison.csv")
+    outlet_df = pd.read_csv("Level 1.xlsx - Outlet Performance Comparison.csv")
+    return lob_df, region_df, outlet_df
 
-# --- LOAD DATA (Embedded for reliability) ---
-# You can replace these with pd.read_csv('your_file.csv') in production
+lob_df, region_df, outlet_df = load_data()
 
-# 1. Regional Data
-df_regional = pd.DataFrame({
-    'Region': ['Central', 'Northern', 'Southern', 'East Coast', 'Sabah', 'Sarawak'],
-    'Pass': [73, 48, 49, 55, 42, 36],
-    'Fail': [25, 16, 13, 12, 8, 14],
-    'Total Headcount': [98, 64, 62, 67, 50, 50]
-})
-
-# 2. Outlet Data
-df_outlet = pd.DataFrame({
-    'Outlet': ['MT', 'PY', 'EV', 'MF'],
-    'Pass': [4, 5, 3, 1],
-    'Fail': [2, 3, 2, 4]
-})
-
-# 3. LOB Data
-df_lob = pd.DataFrame({
-    'Result': [
-        'iPhone (Pass)', 'iPhone (Fail)', 'Mac (Pass)', 'Mac (Fail)',
-        'iPad (Pass)', 'iPad (Fail)', 'Apple Watch (Pass)', 'Apple Watch (Fail)'
-    ],
-    'Central': [20, 45, 12, 24, 23, 12, 11, 7],
-    'Northern': [45, 56, 9, 11, 11, 8, 45, 3],
-    'Sarawak': [23, 12, 56, 7, 44, 4, 67, 99],
-    'Sabah': [12, 54, 34, 6, 8, 22, 5, 66]
-})
-
-# Helper to process LOB data for charts
-def process_lob_data(df):
-    # Melt to long format
-    df_long = df.melt(id_vars=['Result'], var_name='Region', value_name='Count')
-    # Extract Status (Pass/Fail)
-    df_long['Status'] = df_long['Result'].apply(lambda x: 'Pass' if '(Pass)' in x else 'Fail')
-    # Extract Product
-    df_long['Product'] = df_long['Result'].apply(lambda x: x.split(' (')[0])
-    return df_long
-
-# -----------------------------------------------------------------------------
-# 2. COLUMN 1: SIDEBAR
-# -----------------------------------------------------------------------------
+# --- layout: 2 Columns (Sidebar + Main) ---
+# Streamlit uses st.sidebar for the first column
 with st.sidebar:
-    st.header("⚙️ Dashboard Settings")
-    
-    # User selects which view to see
-    selected_view = st.radio(
-        "Select Data View:",
-        ["Regional Comparison", "Outlet Comparison", "LOB Analysis"]
-    )
-    
+    st.header("Dashboard Menu")
     st.markdown("---")
-    st.write("Use this sidebar to toggle between different datasets from your Excel file.")
+    region_filter = st.selectbox("Select Region", ["All"] + list(region_df['Region'].unique()))
+    st.write("Use this sidebar to filter the data displayed in the main dashboard area.")
+    st.markdown("---")
+    st.info("Data Source: Level 1.xlsx")
 
-# -----------------------------------------------------------------------------
-# 3. COLUMN 2: MAIN DASHBOARD AREA (3 ROWS)
-# -----------------------------------------------------------------------------
+# --- Main Content (Column 2) ---
+# We will create 3 rows as requested
 
-st.title(f"📊 {selected_view}")
+# Data Processing based on selection
+if region_filter == "All":
+    display_df = region_df
+    total_pass = region_df['Pass'].sum()
+    total_fail = region_df['Fail'].sum()
+    total_hc = region_df['Total Headcount'].sum()
+else:
+    display_df = region_df[region_df['Region'] == region_filter]
+    total_pass = display_df['Pass'].sum()
+    total_fail = display_df['Fail'].sum()
+    total_hc = display_df['Total Headcount'].sum()
 
-# --- PREPARE DATA BASED ON SELECTION ---
-if selected_view == "Regional Comparison":
-    main_df = df_regional
-    
-    # Calculate KPIs
-    total_pass = main_df['Pass'].sum()
-    total_fail = main_df['Fail'].sum()
-    total_hc = main_df['Total Headcount'].sum()
-    pass_rate = (total_pass / total_hc) * 100
-    
-    # Prepare Chart
-    # Melt for grouped bar chart
-    chart_df = main_df.melt(id_vars=['Region'], value_vars=['Pass', 'Fail'], var_name='Status', value_name='Count')
-    fig = px.bar(chart_df, x='Region', y='Count', color='Status', barmode='group',
-                 color_discrete_map={'Pass': '#2ecc71', 'Fail': '#e74c3c'}, text_auto=True)
+pass_rate = (total_pass / total_hc * 100) if total_hc > 0 else 0
 
-elif selected_view == "Outlet Comparison":
-    main_df = df_outlet
-    
-    # Calculate KPIs
-    total_pass = main_df['Pass'].sum()
-    total_fail = main_df['Fail'].sum()
-    total_hc = total_pass + total_fail
-    pass_rate = (total_pass / total_hc) * 100
-    
-    # Prepare Chart
-    chart_df = main_df.melt(id_vars=['Outlet'], value_vars=['Pass', 'Fail'], var_name='Status', value_name='Count')
-    fig = px.bar(chart_df, x='Outlet', y='Count', color='Status', barmode='group',
-                 color_discrete_map={'Pass': '#2ecc71', 'Fail': '#e74c3c'}, text_auto=True)
-
-elif selected_view == "LOB Analysis":
-    main_df = df_lob
-    processed_lob = process_lob_data(df_lob)
-    
-    # Calculate KPIs
-    total_pass = processed_lob[processed_lob['Status'] == 'Pass']['Count'].sum()
-    total_fail = processed_lob[processed_lob['Status'] == 'Fail']['Count'].sum()
-    total_hc = total_pass + total_fail
-    pass_rate = (total_pass / total_hc) * 100
-    
-    # Prepare Chart (Stacked bar by Product)
-    fig = px.bar(processed_lob, x='Product', y='Count', color='Status', 
-                 color_discrete_map={'Pass': '#2ecc71', 'Fail': '#e74c3c'}, 
-                 facet_col='Region', title="Product Performance by Region")
-
-
-# --- ROW 1: DATA CARDS (KPIs) ---
-st.subheader("1. Key Performance Indicators")
-col1, col2, col3, col4 = st.columns(4)
-
-col1.metric("Total Headcount/Volume", f"{total_hc}")
-col2.metric("Total Pass", f"{total_pass}")
-col3.metric("Total Fail", f"{total_fail}")
-col4.metric("Pass Rate", f"{pass_rate:.1f}%", delta_color="normal")
+# ROW 1: Data Cards
+st.subheader("Key Performance Indicators")
+col1, col2, col3 = st.columns(3)
+col1.metric("Total Pass", f"{total_pass}")
+col2.metric("Total Fail", f"{total_fail}")
+col3.metric("Pass Rate", f"{pass_rate:.1f}%")
 
 st.markdown("---")
 
-# --- ROW 2: GRAPHS ---
-st.subheader("2. Visualization")
-st.plotly_chart(fig, use_container_width=True)
+# ROW 2: Graphs
+st.subheader("Performance Analytics")
+graph_col1, graph_col2 = st.columns(2)
+
+with graph_col1:
+    st.caption("Regional Performance (Pass vs Fail)")
+    # Simple Bar Chart for Regions
+    fig1, ax1 = plt.subplots()
+    x = np.arange(len(region_df['Region']))
+    width = 0.35
+    ax1.bar(x - width/2, region_df['Pass'], width, label='Pass', color='#27ae60')
+    ax1.bar(x + width/2, region_df['Fail'], width, label='Fail', color='#c0392b')
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(region_df['Region'], rotation=45)
+    ax1.legend()
+    st.pyplot(fig1)
+
+with graph_col2:
+    st.caption("LOB Product Performance")
+    # Process LOB Data for plotting
+    lob_df['Product'] = lob_df['Result'].apply(lambda x: x.split(' (')[0])
+    lob_df['Status'] = lob_df['Result'].apply(lambda x: x.split(' (')[1].replace(')', ''))
+    # Sum across all region columns to get total per product
+    lob_df['Total'] = lob_df[['Central', 'Northern', 'sarawak', 'Sabah']].sum(axis=1)
+    pivot_lob = lob_df.pivot_table(index='Product', columns='Status', values='Total', aggfunc='sum')
+    
+    # Stacked Bar Chart
+    fig2, ax2 = plt.subplots()
+    ax2.bar(pivot_lob.index, pivot_lob['Pass'], label='Pass', color='#27ae60')
+    ax2.bar(pivot_lob.index, pivot_lob['Fail'], bottom=pivot_lob['Pass'], label='Fail', color='#c0392b')
+    ax2.legend()
+    st.pyplot(fig2)
 
 st.markdown("---")
 
-# --- ROW 3: DATA TABLE ---
-st.subheader("3. Detailed Data")
-st.dataframe(main_df, use_container_width=True)
+# ROW 3: Data Table
+st.subheader("Detailed Regional Data")
+st.dataframe(region_df, use_container_width=True)
