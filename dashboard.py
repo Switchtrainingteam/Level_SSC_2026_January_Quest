@@ -62,7 +62,7 @@ data_outlets = [
     {'Outlet': 'WW', 'Pass': 2, 'Fail': 4, 'Total': 6, 'Region': 'Central'},
     # Northern
     {'Outlet': 'AC', 'Pass': 2, 'Fail': 5, 'Total': 7, 'Region': 'Northern'},
-    {'Outlet': 'AJ', 'Pass': 5, 'Fail': 3, 'Total': 8, 'Region': 'Northern'},
+    {'Outlet': 'AJ', 'Pass': 4, 'Fail': 3, 'Total': 7, 'Region': 'Northern'},
     {'Outlet': 'AL', 'Pass': 4, 'Fail': 3, 'Total': 7, 'Region': 'Northern'},
     {'Outlet': 'AR', 'Pass': 0, 'Fail': 8, 'Total': 8, 'Region': 'Northern'},
     {'Outlet': 'AS', 'Pass': 0, 'Fail': 5, 'Total': 5, 'Region': 'Northern'},
@@ -144,7 +144,7 @@ df_lob = pd.DataFrame({
     'Sabah': [42, 23, 0, 0, 0, 0],
     'East Coast': [20, 25, 0, 0, 0, 0],
     'Southern': [70, 33, 0, 0, 0, 0],
-    'Northern': [64, 64, 0, 0, 0, 0]
+    'Northern': [64, 63, 0, 0, 0, 0]
 })
 
 # Function to clean and structure LOB data
