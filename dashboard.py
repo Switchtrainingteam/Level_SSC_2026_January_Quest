@@ -111,7 +111,7 @@ data_outlets = [
     {'Outlet': 'IG', 'Pass': 7, 'Fail': 12, 'Total': 19, 'Region': 'Sabah'},
     {'Outlet': 'PQ', 'Pass': 2, 'Fail': 5, 'Total': 7, 'Region': 'Sabah'},
     {'Outlet': 'SS', 'Pass': 0, 'Fail': 10, 'Total': 10, 'Region': 'Sabah'},
-    {'Outlet': 'SWLBFP', 'Pass': 0, 'Fail': 5, 'Total': 4, 'Region': 'Sabah'},
+    {'Outlet': 'SWLBFP', 'Pass': 0, 'Fail': 5, 'Total': 5, 'Region': 'Sabah'},
     {'Outlet': 'SWSBCC', 'Pass': 0, 'Fail': 3, 'Total': 3, 'Region': 'Sabah'},
     {'Outlet': 'SWSBCM', 'Pass': 3, 'Fail': 2, 'Total': 5, 'Region': 'Sabah'},
     {'Outlet': 'SWSBKK', 'Pass': 1, 'Fail': 3, 'Total': 4, 'Region': 'Sabah'},
