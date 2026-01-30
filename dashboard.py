@@ -27,8 +27,8 @@ st.markdown("""
 df_regional = pd.DataFrame({
     'Region': ['Central', 'East Coast', 'Northern', 'Sabah', 'Sarawak', 'Southern'],
     'Fail': [84, 20, 64, 42, 27, 70],
-    'Pass': [48, 25, 64, 23, 33, 33],
-    'Total Headcount': [132, 45, 128, 65, 60, 103]
+    'Pass': [48, 25, 63, 23, 33, 33],
+    'Total Headcount': [132, 45, 127, 65, 60, 103]
 })
 
 # --- B. OUTLET PERFORMANCE (Combined from all individual regional CSVs) ---
