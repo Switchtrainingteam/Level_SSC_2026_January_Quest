@@ -166,6 +166,7 @@ def process_lob_data(df):
 # 3. SIDEBAR NAVIGATION
 # -----------------------------------------------------------------------------
 with st.sidebar:
+    st.image("Main Banner.png")
     st.header("SSC 2026 Dashboard : Explorer")
     view_selection = st.selectbox(
         "Select Dataset:",
