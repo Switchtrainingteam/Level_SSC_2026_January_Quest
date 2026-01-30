@@ -26,9 +26,9 @@ st.markdown("""
 # --- A. REGIONAL PERFORMANCE (Source: Region Performance Comparison.csv) ---
 df_regional = pd.DataFrame({
     'Region': ['Central', 'East Coast', 'Northern', 'Sabah', 'Sarawak', 'Southern'],
-    'Fail': [84, 20, 64, 42, 27, 70],
+    'Fail': [84, 20, 64, 43, 27, 70],
     'Pass': [48, 25, 63, 23, 33, 33],
-    'Total Headcount': [132, 45, 127, 65, 60, 103]
+    'Total Headcount': [132, 45, 127, 66, 60, 103]
 })
 
 # --- B. OUTLET PERFORMANCE (Combined from all individual regional CSVs) ---
@@ -111,7 +111,7 @@ data_outlets = [
     {'Outlet': 'IG', 'Pass': 7, 'Fail': 12, 'Total': 19, 'Region': 'Sabah'},
     {'Outlet': 'PQ', 'Pass': 2, 'Fail': 5, 'Total': 7, 'Region': 'Sabah'},
     {'Outlet': 'SS', 'Pass': 0, 'Fail': 10, 'Total': 10, 'Region': 'Sabah'},
-    {'Outlet': 'SWLBFP', 'Pass': 0, 'Fail': 4, 'Total': 4, 'Region': 'Sabah'},
+    {'Outlet': 'SWLBFP', 'Pass': 0, 'Fail': 5, 'Total': 4, 'Region': 'Sabah'},
     {'Outlet': 'SWSBCC', 'Pass': 0, 'Fail': 3, 'Total': 3, 'Region': 'Sabah'},
     {'Outlet': 'SWSBCM', 'Pass': 3, 'Fail': 2, 'Total': 5, 'Region': 'Sabah'},
     {'Outlet': 'SWSBKK', 'Pass': 1, 'Fail': 3, 'Total': 4, 'Region': 'Sabah'},
@@ -141,7 +141,7 @@ df_lob = pd.DataFrame({
     ],
     'Central': [48, 84, 0, 0, 0, 0],
     'Sarawak': [27, 33, 0, 0, 0, 0],
-    'Sabah': [42, 23, 0, 0, 0, 0],
+    'Sabah': [43, 23, 0, 0, 0, 0],
     'East Coast': [20, 25, 0, 0, 0, 0],
     'Southern': [70, 33, 0, 0, 0, 0],
     'Northern': [64, 63, 0, 0, 0, 0]
