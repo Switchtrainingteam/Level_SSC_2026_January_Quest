@@ -26,8 +26,8 @@ st.markdown("""
 # --- A. REGIONAL PERFORMANCE (Source: Region Performance Comparison.csv) ---
 df_regional = pd.DataFrame({
     'Region': ['Central', 'East Coast', 'Northern', 'Sabah', 'Sarawak', 'Southern'],
-    'Fail': [84, 20, 65, 43, 27, 70],
-    'Pass': [48, 25, 63, 23, 33, 33],
+    'Fail': [84, 20, 64, 43, 27, 70],
+    'Pass': [48, 25, 64, 23, 33, 33],
     'Total Headcount': [132, 45, 128, 66, 60, 103]
 })
 
@@ -144,7 +144,7 @@ df_lob = pd.DataFrame({
     'Sabah': [43, 23, 0, 0, 0, 0],
     'East Coast': [20, 25, 0, 0, 0, 0],
     'Southern': [70, 33, 0, 0, 0, 0],
-    'Northern': [65, 63, 0, 0, 0, 0]
+    'Northern': [64, 64, 0, 0, 0, 0]
 })
 
 # Function to clean and structure LOB data
