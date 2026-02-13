@@ -26,9 +26,9 @@ st.markdown("""
 # --- A. REGIONAL PERFORMANCE (Source: Region Performance Comparison.csv) ---
 df_regional = pd.DataFrame({
     'Region': ['Central', 'East Coast', 'Northern', 'Sabah', 'Sarawak', 'Southern'],
-    'Fail': [84, 20, 64, 43, 27, 70],
+    'Fail': [84, 20, 65, 43, 27, 70],
     'Pass': [48, 25, 63, 23, 33, 33],
-    'Total Headcount': [132, 45, 127, 66, 60, 103]
+    'Total Headcount': [132, 45, 128, 66, 60, 103]
 })
 
 # --- B. OUTLET PERFORMANCE (Combined from all individual regional CSVs) ---
@@ -67,7 +67,7 @@ data_outlets = [
     {'Outlet': 'AR', 'Pass': 0, 'Fail': 8, 'Total': 8, 'Region': 'Northern'},
     {'Outlet': 'AS', 'Pass': 0, 'Fail': 5, 'Total': 5, 'Region': 'Northern'},
     {'Outlet': 'BM', 'Pass': 2, 'Fail': 4, 'Total': 6, 'Region': 'Northern'},
-    {'Outlet': 'GT', 'Pass': 7, 'Fail': 7, 'Total': 14, 'Region': 'Northern'},
+    {'Outlet': 'GT', 'Pass': 8, 'Fail': 7, 'Total': 15, 'Region': 'Northern'},
     {'Outlet': 'KI', 'Pass': 2, 'Fail': 3, 'Total': 5, 'Region': 'Northern'},
     {'Outlet': 'LW', 'Pass': 3, 'Fail': 2, 'Total': 5, 'Region': 'Northern'},
     {'Outlet': 'PG', 'Pass': 5, 'Fail': 2, 'Total': 7, 'Region': 'Northern'},
@@ -144,7 +144,7 @@ df_lob = pd.DataFrame({
     'Sabah': [43, 23, 0, 0, 0, 0],
     'East Coast': [20, 25, 0, 0, 0, 0],
     'Southern': [70, 33, 0, 0, 0, 0],
-    'Northern': [64, 63, 0, 0, 0, 0]
+    'Northern': [65, 63, 0, 0, 0, 0]
 })
 
 # Function to clean and structure LOB data
